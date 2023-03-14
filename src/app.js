@@ -6,17 +6,10 @@
             let textoComunicacao = textAreaComunicacao.value
 
             let linhas = textoBook.split(/\r?\n/)
-            //console.log("Linhas: ")
-            //console.log(linhas)
-
+            
             let linhasUteis = retornaLinhasUteis(linhas)
 
-            //console.log("Linha Uteis: ")
-            //console.log( linhasUteis)
-
             let campos = lerCampos(linhasUteis, textoComunicacao)
-
-            //console.log(campos)
 
             const checkOmitirZeros = document.getElementById("id-omitir")
 
@@ -81,13 +74,12 @@
                     let listaOcorrencias = []
 
                     const regexDependingOn = /DEPENDING ON/
-                    const regexCampoDependingOn = /DEPENDING ON ([A-Z]|-)+/
+                    const regexCampoDependingOn = /DEPENDING ON ([A-Z]|[0-9]|-)+/
 
                     let numeroOcorrencia = 0
                     if(regexDependingOn.test(linhas[i + 1])){
                         let nomeCampoDependingOn = linhas[i + 1].match(regexCampoDependingOn)[0].replace("DEPENDING ON ","")
-                        console.log("nome campo dependingOn " + nomeCampoDependingOn)
-
+                       
                         let campoDependingOn = campos.filter(function(campo) {
                             if (campo.nome === nomeCampoDependingOn) {
                               return campo;
@@ -138,14 +130,13 @@
             let linhasUteis = []
             for (let i = 0; i < linhas.length; i++) {
                 let linha = linhas[i]
-                const regexCampo = /[0-9][0-9] ([A-Z]|-)+( )+PIC( )+((X\([0-9]+\))|(9\([0-9]+\)V[0-9]\([0-9]+\))|(9\([0-9]+\)V[0-9][0-9])|(9\([0-9]+\)V[0-9])|9\([0-9]+\))/
+                const regexCampo = /[0-9][0-9] ([A-Z]|[0-9]|-)+( )+PIC( )+((X\([0-9]+\))|(9\([0-9]+\)V[0-9]\([0-9]+\))|(9\([0-9]+\)V[0-9][0-9])|(9\([0-9]+\)V[0-9])|9\([0-9]+\))/
                 const regexOcorrencias = new RegExp("OCCURS( )+[0-9]+( )+TIMES");
                 const regexApenasNumero = new RegExp("[0-9]+");
                 const regexDependingOn = /DEPENDING ON/
-                const regexCampoDependingOn = /DEPENDING ON ([A-Z]|-)+/
+                const regexCampoDependingOn = /DEPENDING ON ([A-Z]|[0-9]|-)+/
 
                 if(regexCampo.test(linha)){
-                    console.log("Achou campo: " + linha)
                     linhasUteis.push(linha.match(regexCampo)[0])
                 }
 
@@ -162,7 +153,6 @@
 
                     if(regexDependingOn.test(linha)){
                         let textoDependingOn = linha.match(regexCampoDependingOn)[0]
-                        console.log("Achou dependingOn " + textoDependingOn)
                         linhasUteis.push(textoDependingOn)
                     }
                     
@@ -194,7 +184,7 @@
 
         function retornaNome(linha){
             try {
-                const regexNome = /([A-Z]|-){4,}/
+                const regexNome = /([A-Z]|[0-9]|-){4,}/
                 let nome = linha.match(regexNome)[0]
                 return nome
               } catch (exceptionVar) {
